@@ -1,12 +1,20 @@
-# Step 1: Build React App
-FROM node:22
+# Start with a base image containing Node.js
+FROM node:latest
 
-WORKDIR /app
+# Set the working directory in the container to /app
+WORKDIR /hoang
 
+# Copy package.json and package-lock.json to the working directory
+COPY package*.json ./
+
+# Install dependencies in the container
 RUN npm install
 
+# Copy the rest of your app's source code from your host to your image filesystem.
 COPY . .
 
+# Make port 3000 available to the outside world
 EXPOSE 3000
 
-ENTRYPOINT [ "npm", "start" ]
+# Run the application
+CMD ["npm", "start"]
