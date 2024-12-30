@@ -41,8 +41,8 @@ jobs:
           port: ${{secrets.PORT}}
           script: |
             echo "SSH to the server successfully"
-            - name: Pull image from docker hub
-            run: docker pull giangminhhoang99/react-ting:latest
+      - name: Pull image from docker hub
+        run: docker pull giangminhhoang99/react-ting:latest
       - name: Delete Old Container
         run: docker rm -f reactContainer
       - name: Run docker container
