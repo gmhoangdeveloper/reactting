@@ -22,24 +22,7 @@ jobs:
   #   needs: build
   #   runs-on: [aws-ec2-v2]
   #   steps:
-  #     - name: Pull image from docker hub
-  #       run: docker pull giangminhhoang99/react-ting:latest
-  #     - name: Delete Old Container
-  #       run: docker rm -f reactContainer
-  #     - name: Run docker container
-  #       run: docker run -d -p 3000:3000 --name reactContainer giangminhhoang99/react-ting
-  #     - name: send telegram message on push
-  #       uses: appleboy/telegram-action@master
-  #       with:
-  #         to: ${{secrets.TELEGRAM_TO}}
-  #         token: ${{secrets.TELEGRAM_TOKEN}}
-  #         message: |
-  #           ${{ github.actor }} created commit:
-  #           Commit message: ${{ github.event.commits[0].message }}
 
-  #           Repository: ${{ github.repository }}
-
-  #           See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
   deploy:
     needs: build
     name: Pull Image and Deploy to the server
@@ -58,3 +41,21 @@ jobs:
           port: ${{secrets.PORT}}
           script: |
             echo "SSH to the server successfully"
+            - name: Pull image from docker hub
+            run: docker pull giangminhhoang99/react-ting:latest
+      - name: Delete Old Container
+        run: docker rm -f reactContainer
+      - name: Run docker container
+        run: docker run -d -p 3000:3000 --name reactContainer giangminhhoang99/react-ting
+      - name: send telegram message on push
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{secrets.TELEGRAM_TO}}
+          token: ${{secrets.TELEGRAM_TOKEN}}
+          message: |
+            ${{ github.actor }} created commit:
+            Commit message: ${{ github.event.commits[0].message }}
+
+            Repository: ${{ github.repository }}
+
+            See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
